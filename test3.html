@@ -1,0 +1,91 @@
+<html>
+<head>
+  <title>test semantic knockout.js</title>
+  <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+  <script type='text/javascript' src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js'></script>
+  <script type='text/javascript' src="./deps/rdf_store.js"></script>
+  <script type='text/javascript' src="./build/output/knockout-latest.debug.js"></script>
+</head>
+<body>
+
+  <script type='text/javascript'>
+    $(document).ready(function(){
+
+        var testData = "INSERT DATA { <http://test.com/a> <http://test.com/title> 'test resource a' ; <http://test.com/count> '1'.\
+                                      <http://test.com/a> <http://test.com/related1> <http://test.com/c>.\
+                                      <http://test.com/a> <http://test.com/related2> <http://test.com/d>.\
+                                      <http://test.com/c> <http://test.com/title> 'test resource c' ; <http://test.com/count> '3' .\
+                                      <http://test.com/d> <http://test.com/title> 'test resource d' ; <http://test.com/count> '4' .\
+                                      <http://test.com/e> <http://test.com/title> 'test resource e' ; <http://test.com/count> '2' .\
+                                      <http://test.com/e> <http://test.com/related1> <http://test.com/c>.\
+                                      <http://test.com/e> <http://test.com/related2> <http://test.com/d>.\
+                                      <http://test.com/items/wittgenstein> <http://test.com/named> 'wittgenstein' .\
+                                      <http://test.com/items/russell> <http://test.com/named> 'russell' .\
+                                      <http://test.com/items/adorno> <http://test.com/named> 'adorno' .\
+                                      <http://test.com/items/popper> <http://test.com/named> 'popper'  }";
+
+        var test = function() {
+
+            var daModel = {'currentResource': ko.observable("<http://test.com/a>"),
+                           'selectedTemplate': ko.observable('1')};
+            window['daModel'] = daModel;
+            console.log("*** initiating the PAGE");
+            sko.traceResources(jQuery("#to-trace")[0],daModel, function(){
+                console.log("*** TRACED RESOURCES!!!");
+                sko.traceRelations(jQuery("#to-trace")[0],daModel, function(){
+                    console.log("*** TRACED RELATIONS!!!");
+
+                    ko.applyBindings(daModel);
+
+                    window['updateRootResource'] = function(newUri) {
+                        sko.about['0'](newUri);
+                    };
+
+                    window['updateRelated'] = function(a,b) {
+                        var query = "DELETE { "+a+" <http://test.com/related> ?o }";
+                        query = query + " INSERT { "+a+" <http://test.com/related> "+b+" }";
+                        query = query + " WHERE { "+a+" <http://test.com/related> ?o }"; 
+
+                    };
+                });
+            });
+
+        };
+
+        sko.ready(function(){
+            sko.store.execute(testData,
+                              function(result, msg){
+                                  test();
+                              });
+        });
+
+    });
+  </script>
+
+  <script id='test_template' type='text/html'>
+    {{if selectedTemplate() === '1'}}
+      <span id='the-related-thing' rel='<http://test.com/related1>'>
+        <p data-bind="text: <http://test.com/count>"></p>      
+      </span>    
+    {{else}}
+      <span id='the-related-thing' rel='<http://test.com/related2>'>
+        <p data-bind="text: <http://test.com/count>"></p>      
+      </span>    
+    {{/if}}
+  </script> 
+
+  <div id="to-trace" about="currentResource">
+    <p data-bind="text: <http://test.com/title>"></p>
+    <span data-bind='template: "test_template"'></span>
+  </div>
+
+  <script id='phiolosophers_template' type='text/html'>
+    {{each sko.where("{ ?subject <http://test.com/named> ?o }")()}}
+      <li about='${$value}' data-bind='text:<http://test.com/named>'></li>
+    {{/each}}
+  </script> 
+
+  <ul id='philosphers-list' data-bind='template: "phiolosophers_template"'></ul>   
+
+</body>
+</html>

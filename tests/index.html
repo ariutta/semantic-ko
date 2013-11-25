@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Semantic KO Test Suite</title>
+	<link rel="stylesheet" href="./qunit.css" type="text/css" media="screen">
+	<script type="text/javascript" src="./qunit.js"></script>
+	<!-- Your project file goes here -->
+        <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+        <script type='text/javascript' src='http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.js'></script>
+	<script type="text/javascript" src="https://raw.github.com/antoniogarrote/rdfstore-js/master/dist/browser/rdf_store.js"></script>
+        <script type='text/javascript' src="../build/output/knockout-latest.debug.js"></script>
+        <script type='text/javascript' src="./tests.js"></script>
+</head>
+<body>
+	<h1 id="qunit-header">Semantic KO</h1>
+	<h2 id="qunit-banner"></h2>
+	<div id="qunit-testrunner-toolbar"></div>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+
+        <div id='test1'>
+          <span about='<http://test.com/about1>'>
+            <p data-bind='text: <http://test.com/title>'></p>
+          </span>
+        </div>
+
+        <div id='test2'>
+          <span about='currentResource'>
+            <p data-bind='text: <http://test.com/title>'></p>
+          </span>
+        </div>
+
+        <div id='test3'>
+          <span about='currentResource'>
+            <p data-bind='text: <http://test.com/title>'></p>
+          </span>
+        </div>
+
+        <div id='test4'>
+          <span about='currentResource'>
+            <p data-bind='text: sko.current()[propertyToShow()]'></p>
+          </span>
+        </div>
+
+        <div id='test5'>
+          <span about='<http://test.com/about1>'>
+            <p data-bind='text: <http://test.com/title>'></p>
+          </span>
+        </div>
+
+        <div id='test6'>
+          <span id='test6a' about='<http://test.com/about1>'>
+            <p data-bind='text: <http://test.com/title>'></p>
+          </span>
+          <span id='test6b' about='<http://test.com/about1>'>
+            <p data-bind='text: <http://test.com/title>'></p>
+          </span>
+        </div>
+
+        <div id='test7'>
+          <span about='<http://test.com/about1>'>
+            <input data-bind='value: <http://test.com/title>'></p>
+          </span>
+        </div>
+
+        <div id='test8'>
+          <span about='<http://test.com/about1>'>
+            <p id='parent-text' data-bind='text: <http://test.com/title>'></p>
+            <span rel='<http://test.com/related>'>
+              <p id='related-text' data-bind='text: <http://test.com/title>'></p>
+            </span>
+          </span>
+        </div>
+
+        <div id='test9'>
+          <span about='currentResource'>
+            <p id='parent-text9' data-bind='text: <http://test.com/title>'></p>
+            <span rel='relatedToShow'>
+              <p id='related-text9' data-bind='text: <http://test.com/title>'></p>
+            </span>
+          </span>
+        </div>
+
+        <div id='test10'>
+          <span about='currentResource'>
+            <p id='parent-text-10' data-bind='text: <http://test.com/title>'></p>
+            <span rel='relatedToShow'>
+              <p id='related-text-10' data-bind='text: <http://test.com/title>'></p>
+            </span>
+          </span>
+        </div>
+
+        <div id='test11'>
+          <span id='the-resource-11' about='currentResource'>
+            <p id='parent-text-11' data-bind='text: <http://test.com/title>'></p>
+            <span rel='relatedToShow'>
+              <p id='related-text-11' data-bind='text: <http://test.com/title>'></p>
+            </span>
+          </span>
+        </div>
+
+        <div id='test12'>
+          <span id='the-resource-12' about='currentResource'>
+            <input id='text-input-12' data-bind='value: <http://test.com/title>'></input>
+          </span>
+        </div>
+
+        <div id='test13'>
+          <span about='[test:about1]'>
+            <p data-bind='text: [test:title]'></p>
+          </span>
+        </div>
+
+        <div id='test14'>
+          <span about='currentResource'>
+            <p id='parent-text14' data-bind='text: [test:title]'></p>
+            <span rel='relatedToShow'>
+              <p id='related-text14' data-bind='text: [test:title]'></p>
+            </span>
+          </span>
+        </div>
+
+        <script id='test-template15' type='text/html'>
+          {{if selectedTemplate() === '1'}}
+            <span id='the-related-thing-15' rel='[test:related1]'>
+              <p a='1' data-bind="text: [test:title]"></p>      
+            </span>    
+          {{else}}
+            <span id='the-related-thing-15' rel='[test:related2]'>
+              <p b='2' data-bind="text: [test:title]"></p>      
+            </span>    
+          {{/if}}
+        </script> 
+
+        <div id="test15" about="currentResource">
+          <p c='3' data-bind="text: <http://test.com/title>"></p>
+          <span data-bind='template: "test-template15"'></span>
+        </div>
+
+
+        <script id='test-template16' type='text/html'>
+          {{if selectedTemplate() === '1'}}
+            <span id='the-related-thing-16' rel='[test:related1]'>
+              <p data-bind="text: [test:title]"></p>      
+            </span>    
+          {{else}}
+            <span id='the-related-thing-16' rel='[test:related2]'>
+              <p data-bind="text: [test:title]"></p>      
+            </span>    
+          {{/if}}
+        </script> 
+
+        <div id="test16" about="currentResource">
+          <p data-bind="text: <http://test.com/title>"></p>
+          <span data-bind='template: "test-template16"'></span>
+        </div>
+
+        <script id='phiolosophers-template-17' type='text/html'>
+          {{each sko.where("{ ?subject <http://test.com/named> ?o }")()}}
+            <li about='${$value}' data-bind='text:<http://test.com/named>'></li>
+          {{/each}}
+        </script> 
+
+        <div id='test17'>
+          <ul id='philosphers-list' data-bind='template: "phiolosophers-template-17"'></ul>   
+        </div>
+
+        <div id='test18'>
+          <span about='currentResource'>
+            <p data-bind='text: <http://test.com/title>'></p>
+          </span>
+        </div>
+
+        <div id='test19'>
+          <span about='currentResource'>
+            <p data-bind='text: <http://test.com/title>'></p>
+          </span>
+        </div>
+
+        <div id='test20'>
+          <span about='currentResource'>
+            <p data-bind='text: "GOT:"+sko.current().tryProperty("<http://test.com/title>")()'></p>
+          </span>
+        </div>
+
+        <div id='test21'>
+          <span about='currentResource'>
+            <p data-bind='text: "GOT:"+computedTitle()'></p>
+          </span>
+        </div>
+
+        <div id='test23'>
+          <span about='currentResource'>
+            <p data-bind='text: sko.current().computedName()'></p>
+          </span>
+        </div>
+
+        <div id='test24'>
+          <span about='currentResource'>
+            <p id='test24prop1' data-bind='text: sko.current().computedName()'></p>
+            <a id='test24prop2' data-bind='attr: {href: sko.current().computedTopic()}'>click me</a>
+          </span>
+        </div>
+
+        <div id='test25'>
+          <span about='<http://test.com/about1>'>
+            <p id='test25prop1' data-bind='text: <http://xmlns.com/foaf/0.1/name>'></p>
+            <input id='test25prop2' data-bind='value: <http://test.com/value>'></input>
+          </span>
+        </div>
+
+        <div id='test26'>
+          <table about='<http://test.com/about26>' data-bind='template: "test-template26"'>
+          </table>
+        </div>
+
+        <script id='test-template26' type='text/html'>
+          {{each webidProperties}}
+            <tr><td>${$value.prop}</td><td class='bound-prop' data-bind='text: <$value.prop>'></td></tr>
+          {{/each}}
+        </script>
+
+        <div id='test27'>
+          <span about='<http://test.com/about1>'>
+            <p class="present" data-bind='text: <http://test.com/title>'></p>
+            <p class="nullified" data-bind='text: <http://test.com/property>'></p>
+          </span>
+        </div>
+
+        <div id='test28'>
+          <span about='<http://test.com/about1>'>
+            <a class="present" data-bind='attr: {href: [test:dst]}, text: [test:title]'></a>
+          </span>
+        </div>
+</body>
+</html>
